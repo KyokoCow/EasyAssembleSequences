@@ -121,3 +121,127 @@ CTAGCT----------
 
 本ツールは簡易的なアラインメント用です。
 厳密な解析には、BLAST、MAFFT、MUSCLEなどの専用ツールの使用を推奨します。
+
+Simple Sequence Alignment Script (Reference-based)
+
+Overview
+
+This script performs a simple, reference-based alignment of multiple sequence fragments.
+
+Each sequence is aligned to a reference sequence by sliding it along the reference and selecting the position with the highest number of matching bases. The result is exported in a FASTA format where all sequences (including the reference) are displayed in a common coordinate system, similar to a multiple sequence alignment.
+
+- Supports forward and reverse-complement sequences
+- Handles sequences extending before or after the reference
+- Does not consider gaps (insertions/deletions)
+
+---
+
+Usage
+
+1. Place the following files in the same directory:
+   
+   - This script ("assemble_sequences.py")
+   - Reference sequence (FASTA format, filename must start with "REF_")
+   - Sequence files (".fasta", ".fa", or ".seq")
+
+2. Run the script:
+
+python assemble_sequences.py
+
+3. Output file:
+
+aligned.fasta
+
+---
+
+File Naming Rules
+
+- "REF_*.fasta"
+  → Reference sequence
+
+- "R_*.fasta" or "R_*.seq"
+  → Automatically converted to reverse-complement
+
+- Others
+  → Treated as forward sequences
+
+---
+
+Output Format
+
+The output ("aligned.fasta") contains:
+
+- The reference sequence
+- All input sequences aligned to the reference
+- A shared coordinate system
+- Gaps represented as "-"
+
+Example:
+
+>REF
+ATGCTAGCTAGCTAG
+
+>sample1
+---CTAGCTAG-----
+
+>sample2
+CTAGCT----------
+
+---
+
+Algorithm
+
+1. For each sequence:
+   
+   - Slide across the reference sequence
+   - Evaluate all positions including negative offsets (left extension)
+   - Count matching bases
+
+2. Select the position with the highest match score
+
+3. Build a global coordinate system:
+   
+   - Extend left/right as needed to include all sequences
+
+4. Output all sequences aligned to this coordinate
+
+---
+
+Features
+
+- Supports sequences extending beyond the reference boundaries
+- Automatic reverse-complement handling ("R_" prefix)
+- No external dependencies
+- Lightweight and fast
+
+---
+
+Limitations
+
+- No gap-aware alignment (no insertion/deletion handling)
+- Single sequence per file only
+- Simple scoring (match count only, no mismatch penalty)
+
+---
+
+Requirements
+
+- Python 3.x
+- No external libraries required
+
+---
+
+Intended Use
+
+This script is designed for quick and rough alignment of Sanger sequencing fragments, especially when:
+
+- You need a fast visual comparison
+- Full alignment tools are unnecessary
+- You want a lightweight, script-based solution
+
+---
+
+Disclaimer
+
+This tool is intended for approximate alignment only.
+For rigorous sequence analysis, use dedicated alignment tools such as BLAST, MAFFT, or MUSCLE.

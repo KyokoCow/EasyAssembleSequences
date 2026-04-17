@@ -122,7 +122,7 @@ CTAGCT----------
 本ツールは簡易的なアラインメント用です。
 厳密な解析には、BLAST、MAFFT、MUSCLEなどの専用ツールの使用を推奨します。
 
-Simple Sequence Alignment Script (Reference-based)
+# Simple Sequence Alignment Script (Reference-based)
 
 Overview
 

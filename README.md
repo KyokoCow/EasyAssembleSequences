@@ -12,236 +12,114 @@
 
 ---
 
-使用方法
+# EasyAssembleSequences
 
-1. 以下のファイルを同一フォルダに配置します
-   
-   - 本スクリプト（"assemble_sequences.py"）
-   - 参照配列（FASTA形式、ファイル名は "REF_" で始める）
-   - シーケンスファイル（".fasta" / ".fa" / ".seq"）
+サンガーシーケンスデータ用の簡易アセンブリ支援ツールです。
 
-2. コマンドプロンプトで実行：
+以下の環境に対応しています。
 
-python assemble_sequences.py
+- ローカルGUI版（tkinter）
+- Google Colab版
 
-3. 出力ファイル：
-
-aligned.fasta
+GitHub Repository:  
+:contentReference[oaicite:0]{index=0}
 
 ---
 
-ファイル命名ルール
+# 主な機能
 
-- "REF_*.fasta"
-  → 参照配列
-
-- "R_*.fasta" または "R_*.seq"
-  → 自動的に逆相補鎖に変換して処理
-
-- その他
-  → フォワード配列として処理
+- seq → FASTA変換
+- 配列トリミング
+- フォルダ内ファイル確認
+- 簡易アセンブリ
+- コンセンサス配列生成
+- コンセンサス再計算（修正用）
 
 ---
 
-出力形式
+# ローカルでの使用方法
 
-出力ファイル（"aligned.fasta"）には：
+```bash
+python easy_assemble.py
+```
 
-- 参照配列（REF）
-- 各シーケンス
-- 共通座標系で配置された配列
-- ギャップは "-" で表示
+実行するとGUIが起動します。
+
+---
+
+# Google Colabでの使用方法
+
+## リポジトリ取得
+
+```python
+!git clone https://github.com/KyokoCow/EasyAssembleSequences.git
+```
+
+## フォルダ移動
+
+```python
+%cd EasyAssembleSequences
+```
+
+## 実行
+
+```python
+!python easy_assemble.py
+```
+
+---
+
+# Google Drive使用例
+
+```python
+from google.colab import drive
+drive.mount('/content/drive')
+```
 
 例：
 
->REF
-ATGCTAGCTAGCTAG
+```text
+/content/drive/MyDrive/data
+```
 
->sample1
----CTAGCTAG-----
-
->sample2
-CTAGCT----------
+を入力フォルダとして使用できます。
 
 ---
 
-アルゴリズム
+# 想定ファイル名
 
-1. 各シーケンスについて：
-   
-   - 参照配列上でスライド
-   - 負の位置（左側へのはみ出し）も含めて探索
-   - 一致塩基数をカウント
+## 参照配列
 
-2. 最も一致数の多い位置を採用
+```text
+REF_*.fasta
+```
 
-3. 全配列をカバーする共通座標系を構築：
-   
-   - 左右に必要に応じて拡張
+## Forward配列
 
-4. 全配列をその座標系に配置して出力
+```text
+F_*.seq
+F_*.fasta
+```
 
----
+## Reverse配列
 
-特徴
-
-- 参照配列の外側に伸びる配列にも対応
-- "R_" プレフィックスで逆相補鎖を自動処理
-- 外部ライブラリ不要
-- 軽量・高速
+```text
+R_*.seq
+R_*.fasta
+```
 
 ---
 
-制限事項
+# 出力ファイル
 
-- ギャップ（挿入・欠失）を考慮しない
-- 1ファイル1配列のみ対応
-- スコアリングは単純な一致数のみ（ミスマッチペナルティなし）
-
----
-
-動作環境
-
-- Python 3.x
-- 外部ライブラリ不要
+| 処理 | 出力 |
+|---|---|
+| アセンブリ | aligned.fasta |
+| コンセンサス生成 | aligned_with_consensus.fasta |
+| 再計算 | RECHECK_aligned_with_consensus.fasta |
 
 ---
 
-想定用途
+# 注意
 
-本スクリプトは、以下のような用途を想定しています：
-
-- Sangerシーケンス断片の簡易比較
-- 迅速な目視確認
-- 軽量なスクリプトベースの解析
-
----
-
-注意
-
-本ツールは簡易的なアラインメント用です。
-厳密な解析には、BLAST、MAFFT、MUSCLEなどの専用ツールの使用を推奨します。
-
-# Simple Sequence Alignment Script (Reference-based)
-
-Overview
-
-This script performs a simple, reference-based alignment of multiple sequence fragments.
-
-Each sequence is aligned to a reference sequence by sliding it along the reference and selecting the position with the highest number of matching bases. The result is exported in a FASTA format where all sequences (including the reference) are displayed in a common coordinate system, similar to a multiple sequence alignment.
-
-- Supports forward and reverse-complement sequences
-- Handles sequences extending before or after the reference
-- Does not consider gaps (insertions/deletions)
-
----
-
-Usage
-
-1. Place the following files in the same directory:
-   
-   - This script ("assemble_sequences.py")
-   - Reference sequence (FASTA format, filename must start with "REF_")
-   - Sequence files (".fasta", ".fa", or ".seq")
-
-2. Run the script:
-
-python assemble_sequences.py
-
-3. Output file:
-
-aligned.fasta
-
----
-
-File Naming Rules
-
-- "REF_*.fasta"
-  → Reference sequence
-
-- "R_*.fasta" or "R_*.seq"
-  → Automatically converted to reverse-complement
-
-- Others
-  → Treated as forward sequences
-
----
-
-Output Format
-
-The output ("aligned.fasta") contains:
-
-- The reference sequence
-- All input sequences aligned to the reference
-- A shared coordinate system
-- Gaps represented as "-"
-
-Example:
-
->REF
-ATGCTAGCTAGCTAG
-
->sample1
----CTAGCTAG-----
-
->sample2
-CTAGCT----------
-
----
-
-Algorithm
-
-1. For each sequence:
-   
-   - Slide across the reference sequence
-   - Evaluate all positions including negative offsets (left extension)
-   - Count matching bases
-
-2. Select the position with the highest match score
-
-3. Build a global coordinate system:
-   
-   - Extend left/right as needed to include all sequences
-
-4. Output all sequences aligned to this coordinate
-
----
-
-Features
-
-- Supports sequences extending beyond the reference boundaries
-- Automatic reverse-complement handling ("R_" prefix)
-- No external dependencies
-- Lightweight and fast
-
----
-
-Limitations
-
-- No gap-aware alignment (no insertion/deletion handling)
-- Single sequence per file only
-- Simple scoring (match count only, no mismatch penalty)
-
----
-
-Requirements
-
-- Python 3.x
-- No external libraries required
-
----
-
-Intended Use
-
-This script is designed for quick and rough alignment of Sanger sequencing fragments, especially when:
-
-- You need a fast visual comparison
-- Full alignment tools are unnecessary
-- You want a lightweight, script-based solution
-
----
-
-Disclaimer
-
-This tool is intended for approximate alignment only.
-For rigorous sequence analysis, use dedicated alignment tools such as BLAST, MAFFT, or MUSCLE.
+簡易的な探索・確認用ツールとして作成しています。

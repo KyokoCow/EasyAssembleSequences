@@ -1,4 +1,4 @@
-# 参照配列ベース簡易アラインメントスクリプト
+# EasyAssembleSequences
 
 概要
 
@@ -12,17 +12,13 @@
 
 ---
 
-# EasyAssembleSequences
 
-サンガーシーケンスデータ用の簡易アセンブリ支援ツールです。
 
 以下の環境に対応しています。
 
 - ローカルGUI版（tkinter）
 - Google Colab版
 
-GitHub Repository:  
-:contentReference[oaicite:0]{index=0}
 
 ---
 
@@ -38,6 +34,9 @@ GitHub Repository:
 ---
 
 # ローカルでの使用方法
+
+Releasesに置いてあるexeファイルをダウンロードし、ダブルクリック
+もしくはeasy_assemble.pyをダウンロードし、
 
 ```bash
 python easy_assemble.py
@@ -107,6 +106,7 @@ F_*.fasta
 R_*.seq
 R_*.fasta
 ```
+**相補鎖を作成し処理します**
 
 ---
 
@@ -123,3 +123,6 @@ R_*.fasta
 # 注意
 
 簡易的な探索・確認用ツールとして作成しています。
+作業フォルダ内の配列データは上書きされるので、バックアップをおすすめします。
+末端に余分な配列がたくさんあるとおかしな位置に配置されることがあります。
+手動で短めにトリミングすると成功するかもしれません。

@@ -118,7 +118,7 @@ R_*.fasta
 |---|---|
 | アセンブリ | aligned.fasta |
 | コンセンサス生成 | aligned_with_consensus.fasta |
-| 再計算 | RECHECK_aligned_with_consensus.fasta |
+| 再計算 | aligned_with_consensus.fasta (上書き)|
 
 ---
 

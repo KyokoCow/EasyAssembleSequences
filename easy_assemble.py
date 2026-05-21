@@ -858,10 +858,8 @@ def consensus_pipeline(
             "aligned_with_consensus.fasta"
         )
 
-        output_file = os.path.join(
-            input_dir,
-            "RECHECK_aligned_with_consensus.fasta"
-        )
+        # 上書き保存
+        output_file = input_file
 
     else:
 
@@ -1367,7 +1365,7 @@ def run_local_gui():
 
     tk.Button(
         right_frame,
-        text="1. フォルダ内ファイルチェック",
+        text="フォルダ内ファイルチェック",
         width=30,
         command=run_check
     ).pack(pady=5)
@@ -1375,28 +1373,28 @@ def run_local_gui():
 
     tk.Button(
         right_frame,
-        text="2. トリミング",
+        text="トリミング",
         width=30,
         command=run_trim
     ).pack(pady=5)
 
     tk.Button(
         right_frame,
-        text="3. アセンブリ",
+        text="アセンブリ",
         width=30,
         command=run_assembly
     ).pack(pady=5)
 
     tk.Button(
         right_frame,
-        text="4. コンセンサス生成",
+        text="コンセンサス生成",
         width=30,
         command=run_consensus
     ).pack(pady=5)
 
     tk.Button(
         right_frame,
-        text="5. コンセンサス再生成",
+        text="コンセンサス再生成",
         width=30,
         command=run_fix
     ).pack(pady=5)
